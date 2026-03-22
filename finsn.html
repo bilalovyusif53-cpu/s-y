@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sahibə & Yusif </title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital@1&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fffafc; /* Yumşaq, teksturalı fond */
+            --main-pink: #d81b60;
+            --soft-pink: #ffeef2;
+            --deep-red: #c9184a;
+            --text-dark: #333;
+            --text-muted: #666;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Dolğun Fon Animasiyası --- */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #fff 0%, #fff0f5 100%);
+        }
+
+        .heart {
+            position: absolute;
+            display: block;
+            width: 25px;
+            height: 25px;
+            background-color: rgba(255, 128, 171, 0.15); /* Çox şəffaf */
+            transform: rotate(-45deg);
+            border-radius: 20%; /* Yüngülcə yumşaq kənarlar */
+            animation: heartFloat 15s linear infinite;
+        }
+
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: rgba(255, 128, 171, 0.15);
+            border-radius: 50%;
+        }
+
+        .heart::before { top: -12.5px; left: 0; }
+        .heart::after { top: 0; left: 12.5px; }
+
+        @keyframes heartFloat {
+            0% { transform: translateY(110vh) rotate(-45deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(-45deg); opacity: 0; }
+        }
+
+        /* Müxtəlif ölçülü və sürətli ürəklər */
+        .heart:nth-child(1) { left: 10%; animation-delay: 0s; width: 15px; height: 15px; }
+        .heart:nth-child(2) { left: 25%; animation-delay: 3s; animation-duration: 18s; }
+        .heart:nth-child(3) { left: 40%; animation-delay: 6s; width: 10px; height: 10px; animation-duration: 12s; }
+        .heart:nth-child(4) { left: 55%; animation-delay: 2s; animation-duration: 20s; }
+        .heart:nth-child(5) { left: 70%; animation-delay: 9s; width: 30px; height: 30px; }
+        .heart:nth-child(6) { left: 85%; animation-delay: 5s; animation-duration: 15s; }
+
+        /* --- Hero Hissəsi --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 6.5rem;
+            color: var(--deep-red);
+            margin: 0;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+            opacity: 0;
+            animation: fadeInDown 1.5s ease-out forwards;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            max-width: 600px;
+            margin-top: 15px;
+            font-style: italic;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 0.8s forwards;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            font-size: 1.2rem;
+            color: var(--main-pink);
+            animation: bounce 2s infinite;
+        }
+
+        /* --- Hekayə Bölməsi (Timeline/Gallery) --- */
+        .timeline {
+            max-width: 1000px;
+            margin: 100px auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--soft-pink), var(--main-pink), var(--soft-pink), transparent);
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+
+        .memory-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Standart: Sol tərəfdə şəkil */
+            margin-bottom: 120px;
+            position: relative;
+            width: 100%;
+        }
+
+        .memory-item:nth-child(even) {
+            justify-content: flex-end; /* Cüt: Sağ tərəfdə şəkil */
+        }
+
+        .img-polaroid {
+            flex: 1;
+            max-width: 400px;
+            padding: 15px 15px 40px 15px; /* Polaroid effekti */
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: rotate(-3deg); /* Yüngül maillik */
+            transition: 0.5s ease;
+        }
+
+        .memory-item:nth-child(even) .img-polaroid {
+            transform: rotate(3deg); /* Cütlərdə fərqli maillik */
+        }
+
+        .img-polaroid:hover {
+            transform: scale(1.05) rotate(0deg); /* Üstünə gələndə düzəlsin */
+            box-shadow: 0 15px 35px rgba(216, 27, 96, 0.2);
+        }
+
+        .img-polaroid img {
+            width: 100%;
+            border-radius: 3px;
+            object-fit: cover;
+            min-height: 300px;
+        }
+
+        .memory-content {
+            flex: 1;
+            max-width: 450px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            margin-left: 40px; /* Standartda mətn sağdadır */
+            opacity: 0;
+            transform: translateX(30px);
+            transition: 1s ease 0.3s;
+        }
+
+        .memory-item:nth-child(even) .memory-content {
+            margin-left: 0;
+            margin-right: 40px; /* Cütdə mətn soldadır */
+            transform: translateX(-30px);
+        }
+
+        .memory-item.visible .memory-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .memory-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--deep-red);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .memory-content p {
+            font-size: 1.15rem;
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        /* --- Final Bölmə (Yeni, Dolğun Sonluq) --- */
+        .final-chapter {
+            background: linear-gradient(180deg, transparent, #fff), var(--soft-pink);
+            padding: 120px 20px;
+            text-align: center;
+            border-top: 2px solid var(--soft-pink);
+            position: relative;
+        }
+
+        .final-chapter h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: var(--deep-red);
+            margin-bottom: 30px;
+        }
+
+        .final-chapter p {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            max-width: 700px;
+            margin: 0 auto 50px auto;
+            line-height: 1.8;
+            opacity: 0.8;
+        }
+
+        .love-icon {
+            font-size: 3rem;
+            color: var(--main-pink);
+            opacity: 0.7;
+        }
+
+        /* --- Animasiyalar --- */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+
+        /* --- Mobil Uyğunluq --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 4rem; }
+            .hero p { font-size: 1.2rem; padding: 0 20px; }
+            .timeline::before { left: 30px; } /* Timeline xəttini sola çək */
+            .memory-item, .memory-item:nth-child(even) { flex-direction: column; justify-content: flex-start; align-items: flex-start; }
+            .img-polaroid { max-width: 100%; margin-left: 60px; transform: rotate(0deg) !important; padding: 10px 10px 30px 10px; }
+            .memory-content { max-width: 100%; margin-left: 60px; margin-right: 0; margin-top: 20px; transform: translateX(0) !important; opacity: 1 !important; padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hearts-bg">
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+    </div>
+
+    <section class="hero">
+        <h1>Sahibə & Yusif</h1>
+        <p>Aramızdakı bu soyuqluğu xatirələr pozsun...</p>
+        <p style="font-size: 1rem; color: #999; margin-top: 30px;">(Xatirələrimizə bir bax... ↓)</p>
+    </section>
+
+    <div class="timeline">
+        
+        <div class="memory-item">
+            <div class="img-polaroid">
+                <img src="1.jpeg" alt="Xatirə 1">
+            </div>
+            <div class="memory-content">
+                <h2>Bəzən sadəcə bir baxış bəs edir...</h2>
+                <p>O gün dünyada yalnız biz var idik sanki. Gözlərim Gözlərinə dəyəndə, heç vaxt hiss etmədiyim bir şey oldu. Mən o andan etibarən sənə bir səs vermək, səninlə bir ömür susmaq istədim. Hər şeyin başladığı o günü, heç vaxt itirməyək.</p>
+            </div>
+        </div>
+
+        <div class="memory-item">
+            <div class="img-polaroid">
+                <img src="2.jpeg" alt="Xatirə 2">
+            </div>
+            <div class="memory-content">
+                <h2>Sən güləndə, hər şey rəngli görünür</h2>
+                <p>Mənim üçün bu dünyanın ən gözəl melodiyası sənin gülüşündür. Sadəcə sən gül deyə mən hər şeyi edə bilərəm. O gülüş, həyatın bütün çətinliklərini bir saniyədə unutdurur, mənim dünyamı işıqlandırır. Həmişə gülməyin üçün çalışmaq istəyirəm.</p>
+            </div>
+        </div>
+
+        <div class="memory-item">
+            <div class="img-polaroid">
+                <img src="3.jpeg" alt="Xatirə 3">
+            </div>
+            <div class="memory-content">
+                <h2>Mənimlə gəl, yollar uzansın...</h2>
+                <p>Yollar hara aparırsa aparsın, mənim üçün əsas məkan sənin yanındır. Səninlə eyni istiqamətə addımlamaq, eyni mənzərəyə baxmaq – mənə xoşbəxtlik gətirən sadəcə sənsən. Birlikdə keçdiyimiz hər küçə, hər yeni yer bir tarixdir.</p>
+            </div>
+        </div>
+
+        <div class="memory-item">
+            <div class="img-polaroid">
+                <img src="4.jpeg" alt="Xatirə 4">
+            </div>
+            <div class="memory-content">
+                <h2>Səssizliyin belə dadlı olduğu anlar</h2>
+                <p>Səni sadəcə seyr etmək, səsin gəlməsə belə varlığını hiss etmək – bu mənə kifayətdir. Sənin yanında olmaq, sənə dəyər verdiyini bilmək mənə hər şeyi unutdurur. Səni səssizcə dinləməyi belə sevirəm, çünki sənsən.</p>
+            </div>
+        </div>
+
+        <div class="memory-item">
+            <div class="img-polaroid">
+                <img src="5.jpeg" alt="Xatirə 5">
+            </div>
+            <div class="memory-content">
+                <h2>Çətin günlərin sonunda sənin əlin</h2>
+                <p>Həyat həmişə asan olmur, amma sənin əlini tutanda mən hər şeyin öhdəsindən gələ biləcəyimi bilirəm. Aramızda olan bütün bu çətinlikləri aşmaq üçün hazıram. Sənin varlığın mənə güc verir. Biz bir yerdə, hər şeyi aşa bilərik.</p>
+            </div>
+        </div>
+
+        <div class="memory-item">
+            <div class="img-polaroid">
+                <img src="6.jpeg" alt="Xatirə 6">
+            </div>
+            <div class="memory-content">
+                <h2>Və Bu Gün... Hekayəmiz  Davam Etsin</h2>
+                <p>İstəmirəm bu gözəl hekayə burada bitsin. Gəl yeni bir ağ vərəq açaq, ora sadəcə sevgi yazaq. Səni itirmək istəmirəm. Hər şeyi düzəltmək, səni yenidən güldürmək üçün bir şans verərsən?</p>
+            </div>
+        </div>
+
+    </div>
+
+    <section class="final-chapter">
+        <h2>Sahibə & Yusif</h2>
+        <p>Aramızdakı bu soyuqluq bütün bu gözəl xatirələri silməsinə icazə verməyək. Mən hər şeyi düzəltmək, səni yenidən xoşbəxt etmək üçün hazıram. Bu hekayənin sonunu biz özümüz yazaq. Sənin üçün yox, BİZİM üçün...</p>
+        <span class="love-icon">❤️</span>
+    </section>
+
+    <script>
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.3 }); // Şəklin 30%-i görünəndə işə düşsün
+
+        document.querySelectorAll('.memory-item').forEach(item => {
+            observer.observe(item);
+        });
+    </script>
+</body>
+</html>
